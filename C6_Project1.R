@@ -22,9 +22,37 @@
 # 4. State your conclusions and the assumptions needed for your conclusions
 
 
-#library(dplyr)
+library(dplyr)
 
 
 # Part 1) Simulation Exercise
+
+# Define a function which can repeat taking the mean of exponentials
+SimulateExponentials <- function(n.sims, n.size, lambda) {
+  # One sentence description of function
+  #
+  # Args:
+  #
+  # Returns:
+  # 
+  sim.results <- replicate(n.sims, mean(rexp(n.size, lambda)))
+  return(sim.results)
+}
+
+set.seed(190205)  # Set seed for reproducibility
+SimulateExponentials(5, 10, 0.2)
+
+n = 10  # As per the assignment instructions the sample size will be 40
+lambda = 0.2  # As per the assignment instructions the rate will be 0.2
+sim.results <- replicate(5, mean(rexp(n, lambda)))  # As per instuctions, take 1000
+
+
+
+
+
+
+
+
+
 
 
