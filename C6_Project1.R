@@ -37,7 +37,6 @@ MeanOfExponentials <- function(n.obs, lambda) {
   #
   # Returns:
   #   The mean of the exponentials
-  # 
   exp.mean <- mean(rexp(n.obs, lambda))
   return(exp.mean)
 }
@@ -61,8 +60,27 @@ theoretical.variance <- 1/(n * lambda^2)  # 0.625
 
 # Show that the distribution is approximately normal
 
-#hist(sim.results)
-#curve(dnorm(x, mean = theoretical.mean, sd = sqrt(theoretical.variance)), from = 3, to = 8, add = TRUE)
+# Create a function to standardize a numeric vector
+Standardize <- function(x, mean, variance) {
+  # Subtracts the mean and divides by the standard error
+  #
+  # Args:
+  #   x: A numeric vector of values to be standardized
+  #   mean: The known mean of the distribution
+  #   variance: The known variance of the distribution
+  #
+  # Returns:
+  #   The standardized version of numeric vector x
+  standardized.x <- (x - mean)/sqrt(variance)
+  return(standardized.x)
+}
+
+# Standardize the results of the simulation
+sim.results.std <- Standardize(sim.results, mean = theoretical.mean, 
+                               variance = theoretical.variance)
+
+hist(sim.results.std, freq = FALSE)
+curve(dnorm(x), from = -3, to = 4.5, add = TRUE)
 
 
 
