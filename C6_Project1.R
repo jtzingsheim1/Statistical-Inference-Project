@@ -12,7 +12,10 @@
 # distribution
 # 2. Show how variable the sample is (via variance) and compare it to the
 # theoretical variance of the distribution
-# 3. Show that the distribution is approximately normal
+# 3a. Show that the distribution is approximately normal
+# 3b. Focus on the difference between the distribution of a large collection of
+# random exponentials and the distribution of a large collection of averages of
+# 40 exponentials. (Show the effect of the Central Limit Theorem)
 #
 # The second part focuses on basic inferential data analysis. The steps are:
 # 1. Load the ToothGrowth data and perform some basic exploratory data analysis
@@ -22,7 +25,7 @@
 # 4. State your conclusions and the assumptions needed for your conclusions
 
 
-library(dplyr)
+#library(dplyr)
 
 
 # Part 1) Simulation Exercise
@@ -48,49 +51,38 @@ n <- 40  # Set the number of observations per simulation
 lambda <- 0.2  # Set the rate
 sim.results <- replicate(1000, MeanOfExponentials(n, lambda))  # Do 1000 sims
 
-# Show the sample mean and compare it to the theoretical mean
+# 1. Show the sample mean and compare it to the theoretical mean
 sample.mean <- mean(sim.results)  # 4.99928
 theoretical.mean <- 1/lambda  # 5
 # The sample mean of 4.999 is very close to the theoretical mean of 5
 
-# Show the sample variance and compare it to the theoretical variance
+# 2. Show the sample variance and compare it to the theoretical variance
 sample.variance <- var(sim.results)  # 0.59796
 theoretical.variance <- 1/(n * lambda^2)  # 0.625
 # The sample variance of 0.598 is fairly close to the theoretical variance
 
-# Show that the distribution is approximately normal
+# 3a. Show that the distribution is approximately normal
+hist(sim.results, freq = FALSE)  # Plot the simulation results by probability
+# Next a line representing a normal distribution will be overlaid on this plot
+curve(dnorm(x, mean = theoretical.mean, sd = sqrt(theoretical.variance)),
+      add = TRUE)
+# curve() plots a function of x. dnorm() is the expression for the normal
+# distribution, and here it is written as a function of x. dnorm() is scaled to
+# the theoretical mean and standard deviation of this situation. In the plot it
+# is easy to see that the simulation closely follows a normal distribution.
 
-# Create a function to standardize a numeric vector
-Standardize <- function(x, mean, variance) {
-  # Subtracts the mean and divides by the standard error
-  #
-  # Args:
-  #   x: A numeric vector of values to be standardized
-  #   mean: The known mean of the distribution
-  #   variance: The known variance of the distribution
-  #
-  # Returns:
-  #   The standardized version of numeric vector x
-  standardized.x <- (x - mean)/sqrt(variance)
-  return(standardized.x)
-}
+# 3b. Show the effect of the Central Limit Theorem
 
-# Standardize the results of the simulation
-sim.results.std <- Standardize(sim.results, mean = theoretical.mean, 
-                               variance = theoretical.variance)
+# Run another simulation, but without taking the mean or many observations
+sim.results2 <- replicate(1000, rexp(1, lambda))  # Do 1000 sims of 1 obs
+theoretical.variance2 <- 1/(lambda^2)  # 25
 
-hist(sim.results.std, freq = FALSE)
-curve(dnorm(x), from = -3, to = 4.5, add = TRUE)
-
-
-
-
-
-
-
-
-
-
-
-
+# Plot the simulation results by probability
+hist(sim.results2, freq = FALSE)
+curve(dnorm(x, mean = theoretical.mean, sd = sqrt(theoretical.variance2)),
+      add = TRUE)  # Add the corresponding normal curve
+# Clearly the simulation will follow the underlying distribution (exponential),
+# so the normal curve does not fit as well in this plot, and the variance is
+# much higher. This shows the power of the CLT, that by taking the mean and
+# taking large samples the distribution becomes more normal.
 
