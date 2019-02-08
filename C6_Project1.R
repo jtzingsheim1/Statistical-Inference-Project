@@ -27,24 +27,44 @@ library(dplyr)
 
 # Part 1) Simulation Exercise
 
-# Define a function which can repeat taking the mean of exponentials
-SimulateExponentials <- function(n.sims, n.size, lambda) {
-  # One sentence description of function
+# Define a function which takes the mean of exponentials
+MeanOfExponentials <- function(n.obs, lambda) {
+  # Takes the mean of exponentials from the rexp() function
   #
   # Args:
+  #   n.obs: The number of observations variable, passed to rexp()
+  #   lambda: The rate variable of the exponential, passed to rexp()
   #
   # Returns:
+  #   The mean of the exponentials
   # 
-  sim.results <- replicate(n.sims, mean(rexp(n.size, lambda)))
-  return(sim.results)
+  exp.mean <- mean(rexp(n.obs, lambda))
+  return(exp.mean)
 }
 
+# Perform simulation
 set.seed(190205)  # Set seed for reproducibility
-SimulateExponentials(5, 10, 0.2)
+# The instructions specify 1000 simulations of 40 exponentials with rate 0.2
+n <- 40  # Set the number of observations per simulation
+lambda <- 0.2  # Set the rate
+sim.results <- replicate(1000, MeanOfExponentials(n, lambda))  # Do 1000 sims
 
-n = 10  # As per the assignment instructions the sample size will be 40
-lambda = 0.2  # As per the assignment instructions the rate will be 0.2
-sim.results <- replicate(5, mean(rexp(n, lambda)))  # As per instuctions, take 1000
+# Show the sample mean and compare it to the theoretical mean
+sample.mean <- mean(sim.results)  # 4.99928
+theoretical.mean <- 1/lambda  # 5
+# The sample mean of 4.999 is very close to the theoretical mean of 5
+
+# Show the sample variance and compare it to the theoretical variance
+sample.variance <- var(sim.results)  # 0.59796
+theoretical.variance <- 1/(n * lambda^2)  # 0.625
+# The sample variance of 0.598 is fairly close to the theoretical variance
+
+# Show that the distribution is approximately normal
+
+#hist(sim.results)
+#curve(dnorm(x, mean = theoretical.mean, sd = sqrt(theoretical.variance)), from = 3, to = 8, add = TRUE)
+
+
 
 
 
