@@ -14,8 +14,24 @@
 # 4. State your conclusions and the assumptions needed for your conclusions
 
 
-#library(dplyr)
+library(dplyr)
+library(ggplot2)
 
 
-# Part 2) Basic Inferential data analysis
+# 1. Load the ToothGrowth data and perform some basic exploratory data analysis
+tooth.data <- as_tibble(ToothGrowth)  # Load data
+?ToothGrowth  # View documentation
+str(tooth.data)  # Display structure
+head(tooth.data)  # View first 6 rows
+
+# In the documentation the units of the "len" variable are not provided. Based
+# on its values it seems likely that the measurements are in millimeters. The
+# analysis will proceed on this assumption.
+
+tooth.data <- mutate(tooth.data, dose = as.factor(dose))  # Make "dose" a factor
+print(qplot(x = dose, y = len, data = tooth.data, facets = ~ supp, color = dose,
+            main = "The Effect of Vitamin C on Tooth Growth in Guinea Pigs",
+            xlab = "Dose of Vitamin C [mg/day]", ylab = "Tooth Length [mm]"))
+ 
+# 2. Provide a basic summary of the data
 

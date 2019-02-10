@@ -18,8 +18,6 @@
 # 40 exponentials. (Show the effect of the Central Limit Theorem)
 
 
-# Part 1) Simulation Exercise
-
 # Define a function which takes the mean of exponentials
 MeanOfExponentials <- function(n.obs, lambda) {
   # Takes the mean of exponentials from the rexp() function
