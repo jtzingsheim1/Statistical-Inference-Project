@@ -3,8 +3,9 @@
 
 # The purpose of this script is to satisfy the requirements of the project 1
 # peer-graded assignment that is part of the Statistical Inference course
-# within the Data Science Specialization on Coursera. As per the instructions
-# the project will consist of the two parts and this script is for part 1.
+# from Johns Hopkins University within the Data Science Specialization on
+# Coursera. As per the instructions the project will consist of the two parts
+# and this script is for part 1.
 #
 # The first part is a simulation exercise which will simulate 1000 averages of
 # 40 exponentials and then:
@@ -32,6 +33,7 @@ MeanOfExponentials <- function(n.obs, lambda) {
   return(exp.mean)
 }
 
+
 # Perform simulation
 set.seed(190205)  # Set seed for reproducibility
 # The instructions specify 1000 simulations of 40 exponentials with rate 0.2
@@ -39,15 +41,18 @@ n <- 40  # Set the number of observations per simulation
 lambda <- 0.2  # Set the rate
 sim.results <- replicate(1000, MeanOfExponentials(n, lambda))  # Do 1000 sims
 
+
 # 1. Show the sample mean and compare it to the theoretical mean
 sample.mean <- mean(sim.results)  # 4.99928
 theoretical.mean <- 1/lambda  # 5
 # The sample mean of 4.999 is very close to the theoretical mean of 5
 
+
 # 2. Show the sample variance and compare it to the theoretical variance
 sample.variance <- var(sim.results)  # 0.59796
 theoretical.variance <- 1/(n * lambda^2)  # 0.625
 # The sample variance of 0.598 is fairly close to the theoretical variance
+
 
 # 3a. Show that the distribution is approximately normal
 par(mfrow = c(1, 2))  # Setup plot space
@@ -64,6 +69,7 @@ qqnorm(sim.results, main = "Q-Q Plot of sim.results")  # Add Q-Q Plot
 qqline(sim.results)  # Add reference line
 # In the second plot the simulation results still appear to follow the normal
 # reference line fairly well.
+
 
 # 3b. Show the effect of the Central Limit Theorem
 
