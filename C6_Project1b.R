@@ -120,5 +120,15 @@ t.test(x = filter(tooth.data, dose == "1")$len,
 
 # 4. State your conclusions and the assumptions needed for your conclusions
 
-#...
+# The conclusions of this analysis are that tooth growth does have a
+# statistically significant correlation with dosage level of vitamin C. Another
+# conclusion is that tooth growth was not significantly correlated with the
+# types of vitamin C used in the experiment. There are only two assumptions
+# needed to make these conclusions:
+# 1. Means of populations follow a normal distribution
+# 2. Data are sampled independently from the populations
+# While the t-test is robust to the normality assumption, plots were created
+# which show that the data are reasonably normal. While the variance appears to
+# be homogenous in this case, it was compensated for in the t-test. The
+# assumption for independent sampling seems reasonable as well.
 
