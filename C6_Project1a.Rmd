@@ -16,13 +16,65 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Overview
 
-In a few (2-3) sentences explain what is going to be reported on.
+This document is for the Statistical Inference course from Johns Hopkins
+University within the Data Science Specialization on Coursera. This is part 1 of
+a two part assignment. The instructions say:
+
+>Illustrate via simulation and associated explanatory text the properties of the
+distribution of the mean of 40 exponentials. You should:
+>
+1. Show the sample mean and compare it to the theoretical mean of the
+distribution.
+2. Show how variable the sample is (via variance) and compare it to the
+theoretical variance of the distribution.
+3. Show that the distribution is approximately normal.
+>
+In point 3, focus on the difference between the distribution of a large
+collection of random exponentials and the distribution of a large collection of
+averages of 40 exponentials.
 
 
 ## Simulations
 
-Include English explanations of the simulations you ran, with the accompanying R
-code. Your explanations should make clear what the R code accomplishes.
+The first step is to simulation 1000 averages of 40 exponentials. For the
+purpose of this exercise, all of the simulation results are not actually needed.
+It is only required to capture the means, so in the interest of simplicity a
+function will be created which takes the mean of exponentials. This function is
+shown below.
+
+```{r function}
+
+# Define a function which takes the mean of exponentials
+MeanOfExponentials <- function(n.obs, lambda) {
+  # Takes the mean of exponentials from the rexp() function
+  #
+  # Args:
+  #   n.obs: The number of observations variable, passed to rexp()
+  #   lambda: The rate variable of the exponential, passed to rexp()
+  #
+  # Returns:
+  #   The mean of the exponentials
+  exp.mean <- mean(rexp(n.obs, lambda))
+  return(exp.mean)
+}
+
+```
+
+This function can then be used and replicated to obtain the desired result.
+
+```{r simulation}
+
+# Perform simulation
+set.seed(190205)  # Set seed for reproducibility
+# The instructions specify 1000 simulations of 40 exponentials with rate 0.2
+n <- 40  # Set the number of observations per simulation
+lambda <- 0.2  # Set the rate
+sim.results <- replicate(1000, MeanOfExponentials(n, lambda))  # Do 1000 sims
+str(sim.results)  # Show structure/preview
+
+```
+
+The result is a numeric vector of length 1000.
 
 
 ## Sample Mean versus Theoretical Mean
