@@ -38,9 +38,9 @@ which is generated from a markdown file using `knitr`.
 
 ## Part 1: Load the data and perform some basic EDA
 
-The first step is the get the data loaded and explore it:
+The first step is to get the data loaded and explore it:
 
-```{r part.1a}
+```{r part.1a, message = FALSE}
 
 # Load required packages
 library(dplyr)
@@ -49,15 +49,19 @@ library(ggplot2)
 
 # Load the ToothGrowth data and perform some basic exploratory data analysis
 tooth.data <- as_tibble(ToothGrowth)  # Load data as a tibble
-?ToothGrowth  # View documentation
 str(tooth.data)  # Display structure
 head(tooth.data)  # View first 6 rows
 
 ```
 
-In the documentation the units of the `len` variable are not provided. Based on
-its values it seems likely that the measurements are in millimeters. The
-analysis will proceed on this assumption.
+It is recommended to check the dataset documentation with `?ToothGrowth` for
+additional detail. The first variable, `len`, is the length of the cells
+responsible for tooth growth in guinea pigs. In the documentation the units of
+the `len` variable are not provided. Based on its values it seems possible that
+the measurements are in millimeters. The analysis will proceed on this
+assumption. The `supp` variable indicates the supplement type, either `OJ` for
+orange juice, or `VC` for ascorbic acid. The last variable `dose` indicates the
+dosage level of vitamin C that was received.
 
 ```{r part.1b}
 
@@ -92,88 +96,130 @@ dosage levels. Basically there are six groups and each of them has 10
 observations.
 
 
-## Part 3: Use hypothesis tests to compare tooth growth by `supp` and `dose`
+## Part 3: Compare tooth growth by `supp` and `dose`
 
 Next, hypothesis tests will be used to compare tooth growth by supplement type
 and dosage amount. However, before proceeding the assumptions required for
 t-tests should be reviewed:
+
 1. Means of populations follow a normal distribution
 2. Variances of populations are equal
 3. Data are sampled independently from the populations
-These assumptions will be checked before continuing
 
-First, check if data follow a normal distribution
+These assumptions will be checked before continuing; first check if data follow
+a normal distribution:
+
+```{r part.3a}
+
 # Make a histogram
 hist(tooth.data$len, main = "Histogram of Tooth Length",
      xlab = "Tooth Length [mm]")
-# The histogram doesn't look very normal, but it's reasonably symmetric
+
+```
+
+The histogram doesn't look very normal, but it's reasonably symmetric. Check a
+Q-Q plot also:
+
+```{r part.3b}
+
 # Check a Q-Q Plot also
 qqnorm(tooth.data$len)  # Plot data
 qqline(tooth.data$len)  # Add the normal line
-# While the Q-Q Plot isn't perfect, the t-test is robust to the normality
-# assumption. The analysis will continue assuming the data are normal enough
 
-# The second check is of the variance, which does appear to be reasonably equal
-# in this case. However, the t.test function is capable of compensating for
-# unequal variance, so that method will be used to remain conservative. Lastly,
-# there is no reason to believe the data were not sampled independently.
-# Additionally there is no way to test for this assumption, so analysis will
-# continue assuming that all conditions for the two-sided t-test are met.
+```
 
-# The first hypothesis test investigates the effect of the supplement type. The
-# hypotheses are stated below:
-# H_0: mu_oj = mu_vc (There is no significant difference in the means)
-# H_a: mu_oj != mu_vc (There is a significant difference in the means)
+While the Q-Q Plot isn't perfect, the t-test is robust to the normality
+assumption. The analysis will continue assuming the data are normal enough.
+
+The second check is of the variance, which does appear to be reasonably equal
+in this case. However, the `t.test()` function is capable of compensating for
+unequal variance, so that method will be used to remain conservative.
+
+Lastly, there is no reason to believe the data were not sampled independently.
+Additionally, there is no way to test for this assumption, so analysis will
+continue assuming that all conditions for the two-sided t-test are met.
+
+The first hypothesis test investigates the effect of the supplement type. The
+hypotheses are stated below:
+
+* H_0: mu_oj = mu_vc (There is no significant difference in the means)
+* H_a: mu_oj != mu_vc (There is a significant difference in the means)
+
+These will be evaluted using the `t.test()` function:
+
+```{r part.3c}
 
 # The t.test function will be used to evaluate the hypotheses
 t.test(x = filter(tooth.data, supp == "VC")$len,
        y = filter(tooth.data, supp == "OJ")$len)
-# The p-value of this test is 0.06063, so the test is not significant at the
-# 0.95 confidence level. There does not appear to be a significant difference
-# between the supplement types.
 
-# Next, the effect of the dose will be explored, but the instructions specify
-# that only methods taught in the course up to this point can be used. Because
-# of this t-tests will be used again even though other methods could be
-# superior.
+```
 
-# The next test will compare the 0.5 dose level to the 1.0 dose level, and the
-# hypotheses are stated below.
-# H_0: mu_05 = mu_10 (There is no significant difference in the means)
-# H_a: mu_05 != mu_10 (There is a significant difference in the means)
+The p-value of this test is 0.06063, so the test is not significant at the 0.95
+confidence level. There does not appear to be a significant difference between
+the supplement types.
+
+Next, the effect of the dose will be explored, but the instructions specify that
+only methods taught in the course up to this point can be used. Because of this
+t-tests will be used again even though other methods could be superior.
+
+The next test will compare the 0.5 dose level to the 1.0 dose level, and the
+hypotheses are stated below:
+
+* H_0: mu_05 = mu_10 (There is no significant difference in the means)
+* H_a: mu_05 != mu_10 (There is a significant difference in the means)
+
+These are evaluated below:
+
+```{r part.3d}
 
 # The t.test function will be used to evaluate the hypotheses
 t.test(x = filter(tooth.data, dose == "0.5")$len,
        y = filter(tooth.data, dose == "1")$len)
-# The p-value of this test is 1.268e-07 which is extreemly small and is
-# significant at the 0.95 confidence level. One more test will be checked below.
 
-# The last test will compare the 1.0 dose level to the 2.0 dose level, and the
-# hypotheses are stated below.
-# H_0: mu_10 = mu_20 (There is no significant difference in the means)
-# H_a: mu_10 != mu_20 (There is a significant difference in the means)
+```
+
+The p-value of this test is 1.268e-07 which is extreemly small and is
+significant at the 0.95 confidence level. One more test will be checked below.
+
+The last test will compare the 1.0 dose level to the 2.0 dose level, and the
+hypotheses are stated below:
+
+* H_0: mu_10 = mu_20 (There is no significant difference in the means)
+* H_a: mu_10 != mu_20 (There is a significant difference in the means)
+
+These are evaluated below:
+
+```{r part.3e}
 
 # The t.test function will be used to evaluate the hypotheses
 t.test(x = filter(tooth.data, dose == "1")$len,
        y = filter(tooth.data, dose == "2")$len)
-# The p-value of this test is 1.906e-05 which is extreemly small and is
-# significant at the 0.95 confidence level. Between these two tests it does
-# appear that the dose level is significantly correlated with tooth length. A
-# correction could be applied to compensate for the fact that two tests were
-# conducted, but the p-values are low enough that the results would still be
-# significant.
+
+```
+
+The p-value of this test is 1.906e-05 which is extreemly small and is
+significant at the 0.95 confidence level. Between these two tests it does appear
+that the dose level is significantly correlated with tooth length. A correction
+could be applied to compensate for the fact that two tests were conducted, but
+the p-values are low enough that the results would still be significant.
 
 
-# 4. State your conclusions and the assumptions needed for your conclusions
+# Part 4: State your conclusions and assumptions
 
-# The conclusions of this analysis are that tooth growth does have a
-# statistically significant correlation with dosage level of vitamin C. Another
-# conclusion is that tooth growth was not significantly correlated with the
-# types of vitamin C used in the experiment. There are only two assumptions
-# needed to make these conclusions:
-# 1. Means of populations follow a normal distribution
-# 2. Data are sampled independently from the populations
-# While the t-test is robust to the normality assumption, plots were created
-# which show that the data are reasonably normal. While the variance appears to
-# be homogenous in this case, it was compensated for in the t-test. The
-# assumption for independent sampling seems reasonable as well.
+The conclusions of this analysis are that tooth growth in guinea pigs does have
+a statistically significant correlation with the dosage level of vitamin C.
+Another conclusion is that tooth growth was not significantly correlated with
+the types of vitamin C used in the experiment.
+
+The analysis only required two assumptions to reach these conclusions:
+
+1. Means of populations follow a normal distribution
+2. Data are sampled independently from the populations
+
+While the t-test is robust to the normality assumption, plots were created above
+which showed that the data are reasonably normal. While the variance appears to
+be homogenous in this case, it was compensated for in the t-test which assumed
+unequal variance. The assumption for independent sampling seems reasonable as
+well, so the conclusions reached here are based on reasonable assumptions.
+
