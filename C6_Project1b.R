@@ -4,8 +4,8 @@
 # The purpose of this script is to satisfy the requirements of the project 1
 # peer-graded assignment that is part of the Statistical Inference course
 # from Johns Hopkins University within the Data Science Specialization on
-# Coursera. As per the instructions the project will consist of the two parts
-# and this script is for part 2.
+# Coursera. As per the instructions the project will consist of two parts and
+# this script is for part 2.
 #
 # The second part focuses on basic inferential data analysis. The steps are:
 # 1. Load the ToothGrowth data and perform some basic exploratory data analysis
@@ -65,7 +65,7 @@ hist(tooth.data$len, main = "Histogram of Tooth Length",
 qqnorm(tooth.data$len)  # Plot data
 qqline(tooth.data$len)  # Add the normal line
 # While the Q-Q Plot isn't perfect, the t-test is robust to the normality
-# assumption. The analysis will continue assuming the data are normal enough
+# assumption. The analysis will continue assuming the data are normal enough.
 
 # The second check is of the variance, which does appear to be reasonably equal
 # in this case. However, the t.test function is capable of compensating for

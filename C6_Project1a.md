@@ -9,11 +9,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE)
-
-```
 
 
 ## Overview
@@ -44,8 +40,8 @@ only required to capture the means, so in the interest of simplicity a function
 will be created which takes the mean of exponentials. This function is shown
 below.
 
-```{r function}
 
+```r
 # Define a function which takes the mean of exponentials
 MeanOfExponentials <- function(n.obs, lambda) {
   # Takes the mean of exponentials from the rexp() function
@@ -59,13 +55,12 @@ MeanOfExponentials <- function(n.obs, lambda) {
   exp.mean <- mean(rexp(n.obs, lambda))
   return(exp.mean)
 }
-
 ```
 
 This function can then be used and replicated to obtain the desired result.
 
-```{r simulation}
 
+```r
 # Perform simulation
 set.seed(190205)  # Set seed for reproducibility
 # The instructions specify 1000 simulations of 40 exponentials with rate 0.2
@@ -73,7 +68,10 @@ n <- 40  # Set the number of observations per simulation
 lambda <- 0.2  # Set the rate
 sim.results <- replicate(1000, MeanOfExponentials(n, lambda))  # Do 1000 sims
 str(sim.results)  # Show structure/preview
+```
 
+```
+##  num [1:1000] 4.51 4.54 5.83 4.75 4.7 ...
 ```
 
 The result is a numeric vector of length 1000 where each value is the average of
@@ -85,8 +83,8 @@ that set of 40 exponentials.
 The next task is to show the sample mean and compare it to the theoretical mean.
 The instructions also ask to show this in a figure.
 
-```{r part.1}
 
+```r
 # Calculate the sample mean and theoretical mean
 sample.mean <- mean(sim.results)  # 4.99928
 theoretical.mean <- 1/lambda  # 5
@@ -97,11 +95,12 @@ hist(sim.results, main = "Histogram of Simulation Results",
 # Add vertical lines for the means, one is solid red the other is dashed blue
 abline(v = c(sample.mean, theoretical.mean), lwd = c(4, 4),
        col = c("red", "blue"), lty = c(1, 2))
-
 ```
 
-The results above show that the sample mean of `r sample.mean` is very close to
-the theoretical mean of `r theoretical.mean`. The plot shows how the simulation
+![](C6_Project1a_files/figure-html/part.1-1.png)<!-- -->
+
+The results above show that the sample mean of 4.99928 is very close to
+the theoretical mean of 5. The plot shows how the simulation
 results are distributed and with the vertical lines esssentially overlapping it
 is clear how close the sample mean is to the theoretical mean.
 
@@ -111,16 +110,15 @@ is clear how close the sample mean is to the theoretical mean.
 The next task is to show how variable the sample is (via variance) and compare
 it to the theoretical variance of the distribution.
 
-```{r part.2}
 
+```r
 # Calculate the sample variance and the theoretical variance
 sample.variance <- var(sim.results)  # 0.59796
 theoretical.variance <- 1/(n * lambda^2)  # 0.625
-
 ```
 
-The sample variance of `r sample.variance` is fairly close to the theoretical
-variance of `r theoretical.variance`. 
+The sample variance of 0.5979585 is fairly close to the theoretical
+variance of 0.625. 
 
 
 ## Distribution
@@ -128,8 +126,8 @@ variance of `r theoretical.variance`.
 The final step is to show that the distribution is approximately normal and show
 the effect of the central limit theorem.
 
-```{r part.3a}
 
+```r
 # Show that the distribution is approximately normal
 par(mfrow = c(1, 2))  # Setup plot space
 hist(sim.results, freq = FALSE, main = "Histogram of Simulation Results",
@@ -145,8 +143,9 @@ curve(dnorm(x, mean = theoretical.mean, sd = sqrt(theoretical.variance)),
 # Add a Q-Q plot to this figure
 qqnorm(sim.results, main = "Q-Q Plot of Simulation Results")
 qqline(sim.results)  # Add reference line
-
 ```
+
+![](C6_Project1a_files/figure-html/part.3a-1.png)<!-- -->
 
 In the figure above the histogram appears to follow the reference line well. The
 Q-Q plot further reinforces the normality. These simulation results are
@@ -156,8 +155,8 @@ The instructions also ask to demonstrate the effect of the central limit
 theorem. This can be shown easily with another simulation where no mean is taken
 and each sample size is just 1.
 
-```{r part.3b}
 
+```r
 # Run another simulation, but without taking the mean or many observations
 sim.results2 <- replicate(1000, rexp(1, lambda))  # Do 1000 sims of 1 obs
 theoretical.variance2 <- 1/(lambda^2)  # 25
@@ -171,8 +170,9 @@ curve(dnorm(x, mean = theoretical.mean, sd = sqrt(theoretical.variance2)),
 # Add a Q-Q plot to this figure
 qqnorm(sim.results2, main = "Q-Q Plot of Random Exponentials")
 qqline(sim.results2)  # Add reference line
-
 ```
+
+![](C6_Project1a_files/figure-html/part.3b-1.png)<!-- -->
 
 These simulation results follow the underlying distribution (exponential), so
 the normal curve does not fit as well in the first plot. The Q-Q plot makes it

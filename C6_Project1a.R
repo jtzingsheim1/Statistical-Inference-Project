@@ -4,8 +4,8 @@
 # The purpose of this script is to satisfy the requirements of the project 1
 # peer-graded assignment that is part of the Statistical Inference course
 # from Johns Hopkins University within the Data Science Specialization on
-# Coursera. As per the instructions the project will consist of the two parts
-# and this script is for part 1.
+# Coursera. As per the instructions the project will consist of two parts and
+# this script is for part 1.
 #
 # The first part is a simulation exercise which will simulate 1000 averages of
 # 40 exponentials and then:
@@ -46,6 +46,12 @@ sim.results <- replicate(1000, MeanOfExponentials(n, lambda))  # Do 1000 sims
 sample.mean <- mean(sim.results)  # 4.99928
 theoretical.mean <- 1/lambda  # 5
 # The sample mean of 4.999 is very close to the theoretical mean of 5
+
+# Also show as a plot
+hist(sim.results, main = "Histogram of Simulation Results",
+     xlab = "Average of 40 Exponentials")
+abline(v = c(sample.mean, theoretical.mean), lwd = c(4, 4),
+       col = c("red", "blue"), lty = c(1, 2))
 
 
 # 2. Show the sample variance and compare it to the theoretical variance

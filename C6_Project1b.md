@@ -9,11 +9,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE)
-
-```
 
 
 ## Introduction
@@ -41,8 +37,8 @@ which is generated from a markdown file using `knitr`.
 
 The first step is to get the data loaded and explore it:
 
-```{r part.1a, message = FALSE}
 
+```r
 # Load required packages
 library(dplyr)
 library(ggplot2)
@@ -51,8 +47,29 @@ library(ggplot2)
 # Load the ToothGrowth data and perform some basic exploratory data analysis
 tooth.data <- as_tibble(ToothGrowth)  # Load data as a tibble
 str(tooth.data)  # Display structure
-head(tooth.data)  # View first 6 rows
+```
 
+```
+## Classes 'tbl_df', 'tbl' and 'data.frame':	60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: Factor w/ 2 levels "OJ","VC": 2 2 2 2 2 2 2 2 2 2 ...
+##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...
+```
+
+```r
+head(tooth.data)  # View first 6 rows
+```
+
+```
+## # A tibble: 6 x 3
+##     len supp   dose
+##   <dbl> <fct> <dbl>
+## 1   4.2 VC      0.5
+## 2  11.5 VC      0.5
+## 3   7.3 VC      0.5
+## 4   5.8 VC      0.5
+## 5   6.4 VC      0.5
+## 6  10   VC      0.5
 ```
 
 It is recommended to check the dataset documentation with `?ToothGrowth` for
@@ -64,8 +81,8 @@ assumption. The `supp` variable indicates the supplement type, either `OJ` for
 orange juice, or `VC` for ascorbic acid. The last variable `dose` indicates the
 dosage level of vitamin C that was received.
 
-```{r part.1b}
 
+```r
 # Prepare data for plot
 tooth.data <- mutate(tooth.data, dose = as.factor(dose))  # Make "dose" a factor
 
@@ -73,8 +90,9 @@ tooth.data <- mutate(tooth.data, dose = as.factor(dose))  # Make "dose" a factor
 print(qplot(x = dose, y = len, data = tooth.data, facets = ~ supp, color = dose,
             main = "The Effect of Vitamin C on Tooth Growth in Guinea Pigs",
             xlab = "Dose of Vitamin C [mg/day]", ylab = "Tooth Length [mm]"))
-
 ```
+
+![](C6_Project1b_files/figure-html/part.1b-1.png)<!-- -->
 
 In the plot above higher `dose` appears to correlate with longer tooth length,
 and it is difficult to say if there is a correlation to supplement type.
@@ -84,10 +102,19 @@ and it is difficult to say if there is a correlation to supplement type.
 
 Next a basic summary of the data is provided
 
-```{r part.2}
 
+```r
 summary(tooth.data)
+```
 
+```
+##       len        supp     dose   
+##  Min.   : 4.20   OJ:30   0.5:20  
+##  1st Qu.:13.07   VC:30   1  :20  
+##  Median :19.25           2  :20  
+##  Mean   :18.81                   
+##  3rd Qu.:25.27                   
+##  Max.   :33.90
 ```
 
 The summary shows that the `len` variable ranges from 4.20 to 33.90 with a mean
@@ -110,8 +137,8 @@ t-tests should be reviewed:
 These assumptions will be checked before continuing; first check if data follow
 a normal distribution:
 
-```{r part.3a}
 
+```r
 # Make plots to check normality
 par(mfrow = c(1, 2))  # Setup plot space
 hist(tooth.data$len, main = "Histogram of Tooth Length",
@@ -120,8 +147,9 @@ hist(tooth.data$len, main = "Histogram of Tooth Length",
 # Check a Q-Q Plot also
 qqnorm(tooth.data$len)  # Plot data
 qqline(tooth.data$len)  # Add the normal line
-
 ```
+
+![](C6_Project1b_files/figure-html/part.3a-1.png)<!-- -->
 
 The histogram doesn't look very normal, but it's reasonably symmetric. A Q-Q
 plot is also shown, and while it isn't perfect, the t-test is robust to the
@@ -144,12 +172,25 @@ hypotheses are stated below:
 
 These will be evaluted using the `t.test()` function:
 
-```{r part.3c}
 
+```r
 # The t.test function will be used to evaluate the hypotheses
 t.test(x = filter(tooth.data, supp == "VC")$len,
        y = filter(tooth.data, supp == "OJ")$len)
+```
 
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  filter(tooth.data, supp == "VC")$len and filter(tooth.data, supp == "OJ")$len
+## t = -1.9153, df = 55.309, p-value = 0.06063
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -7.5710156  0.1710156
+## sample estimates:
+## mean of x mean of y 
+##  16.96333  20.66333
 ```
 
 The p-value of this test is 0.06063, so the test is not significant at the 0.95
@@ -168,12 +209,25 @@ hypotheses are stated below:
 
 These are evaluated below:
 
-```{r part.3d}
 
+```r
 # The t.test function will be used to evaluate the hypotheses
 t.test(x = filter(tooth.data, dose == "0.5")$len,
        y = filter(tooth.data, dose == "1")$len)
+```
 
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  filter(tooth.data, dose == "0.5")$len and filter(tooth.data, dose == "1")$len
+## t = -6.4766, df = 37.986, p-value = 1.268e-07
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -11.983781  -6.276219
+## sample estimates:
+## mean of x mean of y 
+##    10.605    19.735
 ```
 
 The p-value of this test is 1.268e-07 which is extreemly small and is
@@ -187,12 +241,25 @@ hypotheses are stated below:
 
 These are evaluated below:
 
-```{r part.3e}
 
+```r
 # The t.test function will be used to evaluate the hypotheses
 t.test(x = filter(tooth.data, dose == "1")$len,
        y = filter(tooth.data, dose == "2")$len)
+```
 
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  filter(tooth.data, dose == "1")$len and filter(tooth.data, dose == "2")$len
+## t = -4.9005, df = 37.101, p-value = 1.906e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -8.996481 -3.733519
+## sample estimates:
+## mean of x mean of y 
+##    19.735    26.100
 ```
 
 The p-value of this test is 1.906e-05 which is extreemly small and is
