@@ -1,11 +1,16 @@
-# Statistical-Inference-Project README
+# Statistical Inference Project README
 
 ## Overview
 
-This repo is for the Statistical Inference course from Johns Hopkins University
-within the Data Science Specialization on Coursera. The original instructions
-for the project can be found beneath the brief description section below. The
-scripts and markdowns were all created in RStudio.
+This repo contains my work from the course project from the
+[Statistical Inference course][1] from Johns Hopkins University within the
+[Data Science Specialization][2] on Coursera. The original instructions for the
+project can be found beneath the brief description section below. The scripts
+and markdowns were all created in RStudio.
+
+[1]: https://www.coursera.org/learn/statistical-inference "Statistical Inference course"
+[2]: https://www.coursera.org/specializations/jhu-data-science "Data Science Specialization"
+
 
 ## Brief Description
 
@@ -20,22 +25,26 @@ the assignment as a pdf, so the Rmd files were also knit to pdfs.
 
 ## Original Project Instructions (abbreviated)
 
+Credit for the material below goes to the original authors Caffo, Peng, and
+Leek from John Hopkins University. This material was accessed through the course
+content on Coursera.
+
 >
-The project consists of two parts:
+>The project consists of two parts:
 >
 >* A simulation exercise.  
 >* Basic inferential data analysis.
 >
-You will create a report to answer the questions. Given the nature of the
+>You will create a report to answer the questions. Given the nature of the
 series, ideally you'll use `knitr` to create the reports and convert to a pdf.
 (I will post a very simple introduction to `knitr`). However, feel free to use
 whatever software that you would like to create your pdf.
 >
-Each pdf report should be no more than 3 pages with 3 pages of supporting
+>Each pdf report should be no more than 3 pages with 3 pages of supporting
 appendix material if needed (code, figures, etcetera).
 >
-### Part 1: Simulation Exercise Instructions
-In this project you will investigate the exponential distribution in R and
+>### Part 1: Simulation Exercise Instructions
+>In this project you will investigate the exponential distribution in R and
 compare it with the Central Limit Theorem. The exponential distribution can be
 simulated in R with `rexp(n, lambda)` where `lambda` is the rate parameter. The
 mean of exponential distribution is 1/lambda and the standard deviation is also
@@ -43,7 +52,7 @@ mean of exponential distribution is 1/lambda and the standard deviation is also
 the distribution of averages of 40 exponentials. Note that you will need to do a
 thousand simulations.
 >
-Illustrate via simulation and associated explanatory text the properties of the
+>Illustrate via simulation and associated explanatory text the properties of the
 distribution of the mean of 40 exponentials. You should:
 >
 >* Show the sample mean and compare it to the theoretical mean of the
@@ -52,11 +61,11 @@ distribution.
 theoretical variance of the distribution.  
 >* Show that the distribution is approximately normal.
 >
-In point 3, focus on the difference between the distribution of a large
+>In point 3, focus on the difference between the distribution of a large
 collection of random exponentials and the distribution of a large collection of
 averages of 40 exponentials.
 >
-### Part 2: Basic Inferential Data Analysis Instructions 
+>### Part 2: Basic Inferential Data Analysis Instructions 
 Now in the second portion of the project, we're going to analyze the
 `ToothGrowth` data in the R `datasets` package.
 >
