@@ -66,7 +66,7 @@ collection of random exponentials and the distribution of a large collection of
 averages of 40 exponentials.
 >
 >### Part 2: Basic Inferential Data Analysis Instructions 
-Now in the second portion of the project, we're going to analyze the
+>Now in the second portion of the project, we're going to analyze the
 `ToothGrowth` data in the R `datasets` package.
 >
 >* Load the `ToothGrowth` data and perform some basic exploratory data analyses
